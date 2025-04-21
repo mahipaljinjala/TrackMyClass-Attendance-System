@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CREDP - Attendance Records</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(120deg, #89f7fe, #132b4c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 50px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+            width: 1000px;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto 30px auto;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            color: #ffffff;  /* Default white text color */
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        td {
+            color: black; /* Text color for table data */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>CREDP</h2>
+        <h2>📋 Attendance Records</h2>
+
+        <form method="GET" action="{% url 'view_attendance' %}">
+            <label for="date">Select Date:</label>
+            <input type="date" name="date" id="date" value="{{ date_filter }}">
+            <button type="submit">Filter</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th> <!-- ✅ Action column added -->
+                </tr>
+            </thead>
+            <tbody>
+                {% if records %}
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.student_id }}</td>
+                        <td>{{ record.status }}</td>
+                        <td>{{ record.date }}</td>
+                        <td>
+                            <form action="{% url 'delete_attendance' record.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this record?')">🗑️ Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align:center; font-weight:bold; color:#ff4d4d;">No records found for this student ID.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <!-- Buttons always visible -->
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+            <a href="{% url 'export_attendance' %}"><button>📥 Export to Excel</button></a>
+            <a href="/"><button>🏠 Back to Home</button></a>
+        </div>
+    </div>
+
+    <script>
+        const today = new Date().toISOString().split("T")[0];  // Get today's date in YYYY-MM-DD format
+        const dateInput = document.getElementById("date");
+
+        // Set the max date to today
+        dateInput.max = today;
+
+        // Set the input value to today's date
+        dateInput.value = today;
+    </script>
+</body>
+</html>

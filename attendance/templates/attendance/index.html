@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CREDP - Attendance System</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(120deg, #89f7fe, #132b4c);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 40px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-in-out;
+        width: 100%;
+        max-width: 800px;
+        overflow-y: auto;
+        max-height: 100vh;
+      }
+
+      h2 {
+        color: #ffffff;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+      }
+
+      .form-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 15px 0;
+        gap: 15px;
+      }
+
+      .form-row label {
+        color: #ffffff;
+        width: 120px;
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .form-row input,
+      .form-row select {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.3);
+        border: 2px solid white;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        margin: 10px;
+      }
+
+      button:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .error-message {
+        color: #ffdddd;
+        margin-top: 10px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+        }
+
+        .form-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .form-row label {
+          width: 100%;
+          text-align: left;
+          margin-bottom: 5px;
+        }
+
+        button {
+          width: 100%;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h2>CREDP</h2>
+        <h2>Mark Attendance</h2>
+      
+        {% if success %}
+        <p id="success-message" style="
+          color: #ccffcc;
+          background-color: rgba(0, 100, 0, 0.3);
+          padding: 10px;
+          border-radius: 5px;
+          font-weight: bold;
+          margin-top: 10px;
+          transition: opacity 1s ease-in-out;
+        ">
+          ✔️ {{ success }}
+        </p>
+        {% endif %}
+      
+        <form method="POST">
+          {% csrf_token %}
+      
+          <div class="form-row">
+            <label for="student_id">Student ID:</label>
+            <input type="text" id="student_id" name="student_id" required />
+          </div>
+      
+          <div class="form-row">
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date" required />
+          </div>
+      
+          <div class="form-row">
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+            </select>
+          </div>
+      
+          <script>
+            const today = new Date().toISOString().split("T")[0];
+            const dateInput = document.getElementById("date");
+            dateInput.max = today;
+            dateInput.value = today;
+          </script>
+      
+          <button type="submit">Submit</button>
+      
+          {% if error %}
+          <p class="error-message">{{ error }}</p>
+          {% endif %}
+        </form>
+      
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+            <a href="/view"><button type="button">📋 View Attendance</button></a>
+            <a href="/search"><button type="button">🔍 Search Attendance</button></a>
+          </div>
+          
+      
+      <script>
+        // ✅ Auto-hide the success message after 4 seconds
+        setTimeout(() => {
+          const msg = document.getElementById('success-message');
+          if (msg) {
+            msg.style.opacity = '0';
+          }
+        }, 4000);
+      </script>
+      
+  </body>
+</html>
