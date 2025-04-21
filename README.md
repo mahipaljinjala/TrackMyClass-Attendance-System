@@ -17,7 +17,8 @@
 - Django ORM for modeling students, classes, and attendance records
 
 ## 📷 Screenshots
-(Add screenshots of your UI here)
+Dashboard
+![Uploading WhatsApp Image 2025-04-02 at 23.40.36_a5031605.jpg…]()
 
 ## 🏁 Getting Started
 ```bash
