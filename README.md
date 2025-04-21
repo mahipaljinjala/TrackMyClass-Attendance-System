@@ -17,8 +17,18 @@
 - Django ORM for modeling students, classes, and attendance records
 
 ## 📷 Screenshots
-Dashboard
-![Uploading WhatsApp Image 2025-04-02 at 23.40.36_a5031605.jpg…]()
+
+### 📊 Dashboard
+![Dashboard](./screenshots/Dashboard.png)
+
+### 📝 Attendance Marking Page
+![Attendance Marking Page](./screenshots/Attendance Marking Page.png)
+
+### 🔍 Attendance Filter
+![Attendance Filter](./screenshots/Attendance Filter.png)
+
+### 📁 Attendance Excel Sheet
+![Attendance Excel Sheet](./screenshots/Attendance Excel Sheet.png)
 
 ## 🏁 Getting Started
 ```bash
